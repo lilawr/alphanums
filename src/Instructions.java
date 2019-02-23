@@ -25,7 +25,7 @@ class Instructions {
     }
 
     public static void enterChoice() {
-        System.out.println("Enter your choice: ");
+        System.out.println("Enter your menu choice: ");
     }
 
     public static void endGame() {

@@ -71,7 +71,7 @@ public class Game {
     }
 
     private void playWithTimer() {
-        JSONArray dictionary = ParseJson.readFromJsonFile("src/dictionary.json");
+        JSONArray dictionary = ParseJson.readFromJsonFile("dictionary.json");
         String word = dictionary.getString((int) Math.round(Math.random() * (dictionary.length() - 1)));
         long startTime = System.currentTimeMillis();
         System.out.println("%%%----------- TIMER STARTED -------%%%");
@@ -106,7 +106,7 @@ public class Game {
 
     public void playWithDictionary(){
         boolean keepGoing = false;
-        JSONArray dictionary = ParseJson.readFromJsonFile("src/dictionary.json");
+        JSONArray dictionary = ParseJson.readFromJsonFile("dictionary.json");
         String word = dictionary.getString((int) Math.round(Math.random() * (dictionary.length() - 1)));
         keepGoing = play(word);
         if(keepGoing) playWithDictionary();
