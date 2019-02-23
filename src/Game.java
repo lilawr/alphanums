@@ -8,28 +8,15 @@ public class Game {
     private AlphaBet alphabet = new AlphaBet();
     private long bestTime = 0;
 
-    public void start() {
-        start(false, 0);
-    }
-
-    public void start(boolean automatic, int autoChoice){
+    public void start(){
         boolean quit = false;
         int choice = 0;
-
-        if(!automatic) {
-            Instructions.menu();
-        } else {
-            choice = autoChoice;
-        }
+        Instructions.menu();
 
         while (!quit) {
-            if(!automatic) {
-                Instructions.enterChoice();
-                choice = scanner.nextInt();
-                scanner.nextLine();
-            } else {
-                automatic = false;
-            }
+            Instructions.enterChoice();
+            choice = scanner.nextInt();
+            scanner.nextLine();
             switch (choice) {
                 case 0:
                     Instructions.menu();
@@ -50,9 +37,10 @@ public class Game {
                     playWithTimer();
                     break;
                 case 6:
-                    quit = true;
                     scanner.close();
-                    break;
+                    quit = true;
+                    System.out.println("GoodBye!");
+                    return;
             }
         }
     }
@@ -61,7 +49,7 @@ public class Game {
         Instructions.enterNumberToConvert();
         if(!scanner.hasNextInt()) {
             String word = scanner.nextLine();
-            if(word.compareTo(Instructions.END) == 0) {
+            if(Utils.isEnd(word)) {
                 Instructions.menu();
                 return;
             }
@@ -75,7 +63,7 @@ public class Game {
     public void converter(){
         Instructions.enterWord();
         String word = scanner.nextLine();
-        if(word.compareTo(Instructions.END) == 0) {
+        if(Utils.isEnd(word)) {
             Instructions.menu();
             return;
         }
@@ -87,7 +75,7 @@ public class Game {
         String word = dictionary.getString((int) Math.round(Math.random() * (dictionary.length() - 1)));
         long startTime = System.currentTimeMillis();
         System.out.println("%%%----------- TIMER STARTED -------%%%");
-        boolean resp = play(word, 5);
+        boolean resp = play(word);
         if (!resp){ return; }
 
         long endTime = System.currentTimeMillis();
@@ -106,46 +94,48 @@ public class Game {
     public void playTest() {
         Instructions.enterWord();
         String word = scanner.nextLine();
-        play(word, 3);
+        boolean keepGoing = false;
+        if(Utils.isEnd(word)) {
+            Instructions.endGame();
+            Instructions.menu();
+        } else {
+            keepGoing = play(word);
+        }
+        if(keepGoing) playTest();
     }
 
     public void playWithDictionary(){
+        boolean keepGoing = false;
         JSONArray dictionary = ParseJson.readFromJsonFile("src/dictionary.json");
         String word = dictionary.getString((int) Math.round(Math.random() * (dictionary.length() - 1)));
-        play(word, 4);
+        keepGoing = play(word);
+        if(keepGoing) playWithDictionary();
     }
 
-    public boolean play(String word, int option) {
+    public boolean play(String word) {
         Instructions.word(word);
         Instructions.playResponse();
         String response = scanner.nextLine();
         String answer = alphabet.getNumberWord(word);
 
-        if(response.compareTo(Instructions.END) == 0) {
+        if(Utils.isEnd(response)) {
             Instructions.endGame();
             Instructions.menu();
             return false;
         }
 
-        if (response.compareTo(Instructions.ANSWER) == 0) {
+        if (Utils.isAnswer(response)) {
             Instructions.showAnswer(answer);
-            if(option != 5) {
-                start(true, option);
-            }
             return false;
         }
 
-        if (alphabet.cleanSpaces(answer).compareTo(alphabet.cleanSpaces(response)) == 0) {
+        if (Utils.cleanSpaces(answer).compareTo(Utils.cleanSpaces(response)) == 0) {
             Instructions.correct();
-            if(option != 5) {
-                start(true, option);
-            }
             return true;
         }
 
         Instructions.wrong(word, response);
-        play(word, option);
-        return false;
+        return play(word);
     }
 }
 

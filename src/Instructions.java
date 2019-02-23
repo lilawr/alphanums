@@ -1,8 +1,5 @@
 class Instructions {
 
-    public static String ANSWER = "answer";
-    public static String END = "end";
-
     public static void menu() {
         breakLine();
         System.out.println("\nOptions Menu: ");
@@ -19,7 +16,7 @@ class Instructions {
         System.out.println("-----------------------------------------------------------------------------------------");
     }
     public static void enterWord() {
-        System.out.println("Enter you word:");
+        System.out.println("Enter your word:");
     }
 
     public static void word(String word) {

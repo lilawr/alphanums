@@ -16,9 +16,6 @@ public class AlphaBet {
         }
     }
 
-    public String cleanSpaces(String string) {
-        return string.replace(" ", "");
-    }
 
     public String getNumberWord (String word){
         char[] chars = word.toLowerCase().toCharArray();
