@@ -101,7 +101,7 @@ A basic command line game to convert numbers to letters.
 	Enter your choice: 
 	6
 
-GoodBye!
+	GoodBye!
 
 
 ### Dependancies: 
