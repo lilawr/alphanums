@@ -6,6 +6,8 @@ public class Game {
 
     private Scanner scanner = new Scanner(System.in);
     private AlphaBet alphabet = new AlphaBet();
+    private Dictionary dictionary = new Dictionary();
+
     private long bestTime = 0;
 
     public void start(){
@@ -71,8 +73,7 @@ public class Game {
     }
 
     private void playWithTimer() {
-        JSONArray dictionary = ParseJson.readFromJsonFile("dictionary.json");
-        String word = dictionary.getString((int) Math.round(Math.random() * (dictionary.length() - 1)));
+        String word = dictionary.getWord();
         long startTime = System.currentTimeMillis();
         System.out.println("%%%----------- TIMER STARTED -------%%%");
         boolean resp = play(word);
@@ -106,8 +107,7 @@ public class Game {
 
     public void playWithDictionary(){
         boolean keepGoing = false;
-        JSONArray dictionary = ParseJson.readFromJsonFile("dictionary.json");
-        String word = dictionary.getString((int) Math.round(Math.random() * (dictionary.length() - 1)));
+        String word = dictionary.getWord();
         keepGoing = play(word);
         if(keepGoing) playWithDictionary();
     }
