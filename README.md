@@ -7,7 +7,8 @@ A basic command line game to convert numbers to letters.
 
 ### Test yourself converting words to numbers!
 
-##Example game: 
+## Example game: 
+
 -----------------------------------------------------------------------------------------
 
 Options Menu: 
@@ -103,7 +104,6 @@ Enter your choice:
 GoodBye!
 
 
-###Dependancies: 
-
-o
+### Dependancies: 
+org.json
 
