@@ -5,23 +5,25 @@ public class AlphaBet {
     private char[] alphabet ;
 
     public AlphaBet () {
-        alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+        alphabet = " abcdefghijklmnopqrstuvwxyz".toCharArray();
         setUpAlphaBet();
     }
 
     public void setUpAlphaBet(){
         this.list = new HashMap<>();
         for (int i = 0; i<26; i++) {
-            this.list.put(this.alphabet[i], i+1);
+            this.list.put(this.alphabet[i], i);
         }
     }
 
 
     public String getNumberWord (String word){
-        char[] chars = word.toLowerCase().toCharArray();
+        char[] chars = Utils.cleanUnsupported(word).toCharArray();
         String stringNum = "";
         for(char c : chars) {
-            stringNum += list.get(c) + " ";
+            if(list.get(c) != null) {
+                stringNum += list.get(c) + " ";
+            }
         }
         return stringNum;
     }

@@ -1,5 +1,5 @@
-# alphanums
-A basic command line game to convert numbers to letters. 
+# alphanums  v0.1
+A basic command line game to convert numbers to letters.
 
 ## Priciples: 
     a -> 1
@@ -24,7 +24,7 @@ A basic command line game to convert numbers to letters.
 	1
 	Enter your word:
 	hello welcome to alphanums
-	8 5 12 12 15 null 23 5 12 3 15 13 5 null 20 15 null 1 12 16 8 1 14 21 13 19 
+	8 5 12 12 15 0 23 5 12 3 15 13 5 0 20 15 0 1 12 16 8 1 14 21 13 19
 	Enter your choice: 
 	2
 	Enter your number x (0<x<26):

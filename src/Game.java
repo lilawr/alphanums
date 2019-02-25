@@ -69,7 +69,8 @@ public class Game {
             Instructions.menu();
             return;
         }
-        System.out.println(alphabet.getNumberWord(word));
+        String cleaned = Utils.cleanUnsupported(word);
+        System.out.println(alphabet.getNumberWord(cleaned));
     }
 
     private void playWithTimer() {
@@ -100,7 +101,8 @@ public class Game {
             Instructions.endGame();
             Instructions.menu();
         } else {
-            keepGoing = play(word);
+            String cleaned = Utils.cleanUnsupported(word);
+            keepGoing = play(cleaned);
         }
         if(keepGoing) playTest();
     }

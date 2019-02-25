@@ -4,7 +4,11 @@ public class Utils {
     public static String END = "end";
 
     public static String cleanSpaces(String string) {
-        return string.replace(" ", "");
+        return string.replaceAll(" ", "");
+    }
+
+    public static String cleanUnsupported(String string) {
+        return string.toLowerCase().replaceAll("[^a-z ]", "").replaceAll("( )+", " ").trim();
     }
 
     public static boolean  isEnd (String word) {
