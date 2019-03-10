@@ -1,6 +1,6 @@
 class Instructions {
 
-     static void menu() {
+    static void menu() {
         breakLine();
         System.out.println("\nOptions Menu: ");
         System.out.println("\t 0 - Print Menu.");
@@ -13,41 +13,44 @@ class Instructions {
         System.out.println("\t 7 - Quit the application.");
         breakLine();
     }
-     static void breakLine() {
+
+    static void breakLine() {
         System.out.println("-----------------------------------------------------------------------------------------");
     }
-     static void enterWord() {
+
+    static void enterWord() {
         System.out.println("Enter your word:");
     }
 
-     static void word(String word) {
+    static void word(String word) {
         breakLine();
         System.out.println("Word To Convert: " + word);
     }
 
-     static void enterChoice() {
+    static void enterChoice() {
         System.out.println("Enter your menu choice: ");
     }
 
-     static void endGame() {
-        System.out.println("Ending Game.");
+    static void endGame() {
         breakLine();
+        System.out.println("Ending Game.");
     }
 
-     static void correct() {
+    static void correct() {
         System.out.println("Correct!! :)");
     }
 
-     static void wrong(String word, String response) {
-        System.out.println("Sorry .. try again for word: "+ word+", you entered "+response );
+    static void wrong(String word, String response) {
+        System.out.println("Sorry .. try again for word: " + word + ", you entered " + response);
     }
 
-     static void showAnswer(String answer) {
+    static void showAnswer(String answer) {
+        breakLine();
         System.out.println("The answer is " + answer);
         breakLine();
     }
 
-     static void playResponse() {
+    static void playResponse() {
         breakLine();
         System.out.println("Please enter your numbers (separated by a space) or (answer to see the reponse, end to close the game): ");
     }

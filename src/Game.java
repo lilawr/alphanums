@@ -54,7 +54,7 @@ public class Game {
                         quit = true;
                         scanner.close();
                         System.out.println("GoodBye!");
-                        return;
+                        System.exit(0);
                 }
         }
     }
@@ -123,6 +123,7 @@ public class Game {
             public void run()
             {
                 t.interrupt();
+                System.out.println("");
                 Instructions.breakLine();
                 System.out.println("You did: " + score + " in 60 seconds");
                 if(score > highScore) {
