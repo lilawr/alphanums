@@ -1,6 +1,7 @@
-import org.json.JSONArray;
 
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Game {
 
@@ -9,6 +10,9 @@ public class Game {
     private Dictionary dictionary = new Dictionary();
 
     private long bestTime = 0;
+    private int highScore = 0;
+    private int score = 0;
+    private int gameSetting = 0;
 
     public void start(){
         boolean quit = false;
@@ -16,34 +20,42 @@ public class Game {
         Instructions.menu();
 
         while (!quit) {
-            Instructions.enterChoice();
-            choice = scanner.nextInt();
-            scanner.nextLine();
-            switch (choice) {
-                case 0:
-                    Instructions.menu();
-                    break;
-                case 1:
-                    converter();
-                    break;
-                case 2:
-                    convertToLetter();
-                    break;
-                case 3:
-                    playTest();
-                    break;
-                case 4:
-                    playWithDictionary();
-                    break;
-                case 5:
-                    playWithTimer();
-                    break;
-                case 6:
-                    scanner.close();
-                    quit = true;
-                    System.out.println("GoodBye!");
-                    return;
-            }
+                Instructions.enterChoice();
+                choice = scanner.nextInt();
+                scanner.nextLine();
+                switch (choice) {
+                    case 0:
+                        Instructions.menu();
+                        break;
+                    case 1:
+                        converter();
+                        break;
+                    case 2:
+                        convertToLetter();
+                        break;
+                    case 3:
+                        playTest();
+                        break;
+                    case 4:
+                        playWithDictionary();
+                        break;
+                    case 5:
+                        playWithTimer();
+                        break;
+                    case 6:
+                        Timer timer = new Timer();
+                        try {
+                            play60Seconds(timer);
+                        }catch(InterruptedException e) {
+                            timer.cancel();
+                        }
+                        break;
+                    case 7:
+                        quit = true;
+                        scanner.close();
+                        System.out.println("GoodBye!");
+                        return;
+                }
         }
     }
 
@@ -62,7 +74,7 @@ public class Game {
         System.out.println(alphabet.getLetter(letterIndex));
     }
 
-    public void converter(){
+    private void converter(){
         Instructions.enterWord();
         String word = scanner.nextLine();
         if(Utils.isEnd(word)) {
@@ -76,7 +88,7 @@ public class Game {
     private void playWithTimer() {
         String word = dictionary.getWord();
         long startTime = System.currentTimeMillis();
-        System.out.println("%%%----------- TIMER STARTED -------%%%");
+        System.out.println("%%%----------- CLOCK STARTED -------%%%");
         boolean resp = play(word);
         if (!resp){ return; }
 
@@ -92,8 +104,42 @@ public class Game {
         if(bestTime != 0) System.out.println("Your best time is: " + bestTime);
     }
 
+    private void play60Seconds(Timer timer) throws InterruptedException {
+        final Runnable playTask = new Runnable() {
+            public void run() {
+                score = 0;
+                try{
+                    playWithDictionaryTimed();
+                } catch(InterruptedException e) {
+                    Instructions.endGame();
+                }
+            }
+        };
 
-    public void playTest() {
+        final Thread t = new Thread(playTask);
+
+        TimerTask closeGame = new TimerTask()
+        {
+            public void run()
+            {
+                t.interrupt();
+                Instructions.breakLine();
+                System.out.println("You did: " + score + " in 60 seconds");
+                if(score > highScore) {
+                    System.out.println("You broke your record of " + highScore);
+                    highScore = score;
+                }
+                Instructions.breakLine();
+            }
+        };
+
+        t.start();
+        timer.schedule(closeGame, 60*1000);
+        Thread.sleep(60200);
+    }
+
+
+    private void playTest() {
         Instructions.enterWord();
         String word = scanner.nextLine();
         boolean keepGoing = false;
@@ -106,15 +152,25 @@ public class Game {
         }
         if(keepGoing) playTest();
     }
-
-    public void playWithDictionary(){
+    private void playWithDictionaryTimed() throws InterruptedException {
+        boolean keepGoing = false;
+        String word = dictionary.getWord();
+        keepGoing = playThread(word);
+        if(keepGoing) {
+            score ++;
+            playWithDictionaryTimed();
+        }
+    }
+    private void playWithDictionary(){
         boolean keepGoing = false;
         String word = dictionary.getWord();
         keepGoing = play(word);
-        if(keepGoing) playWithDictionary();
+        if(keepGoing) {
+            playWithDictionary();
+        }
     }
 
-    public boolean play(String word) {
+    private boolean play(String word) {
         Instructions.word(word);
         Instructions.playResponse();
         String response = scanner.nextLine();
@@ -139,5 +195,32 @@ public class Game {
         Instructions.wrong(word, response);
         return play(word);
     }
-}
 
+    private boolean playThread(String word) throws InterruptedException {
+        Instructions.word(word);
+        Instructions.playResponse();
+        ConsoleInput console = new ConsoleInput(1,60);
+
+        String response = console.readLine();
+        String answer = alphabet.getNumberWord(word);
+
+        if(Utils.isEnd(response)) {
+            Instructions.endGame();
+            Instructions.menu();
+            return false;
+        }
+
+        if (Utils.isAnswer(response)) {
+            Instructions.showAnswer(answer);
+            return false;
+        }
+
+        if (Utils.cleanSpaces(answer).compareTo(Utils.cleanSpaces(response)) == 0) {
+            Instructions.correct();
+            return true;
+        }
+
+        Instructions.wrong(word, response);
+        return playThread(word);
+    }
+}
