@@ -105,11 +105,14 @@ public class Game {
     }
 
     private void play60Seconds(Timer timer) throws InterruptedException {
+        final Thread thisThread = Thread.currentThread();
         final Runnable playTask = new Runnable() {
             public void run() {
                 score = 0;
                 try{
                     playWithDictionaryTimed();
+                    thisThread.interrupt();
+                    timer.cancel();
                 } catch(InterruptedException e) {
                     Instructions.endGame();
                 }

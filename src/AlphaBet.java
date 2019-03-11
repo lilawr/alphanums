@@ -11,7 +11,7 @@ public class AlphaBet {
 
     public void setUpAlphaBet(){
         this.list = new HashMap<>();
-        for (int i = 0; i<26; i++) {
+        for (int i = 0; i<27; i++) {
             this.list.put(this.alphabet[i], i);
         }
     }
