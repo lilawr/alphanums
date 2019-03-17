@@ -40,9 +40,12 @@ public class Game {
                         playWithDictionary();
                         break;
                     case 5:
-                        playWithTimer();
+                        playWithDictionaryReverse();
                         break;
                     case 6:
+                        playWithTimer();
+                        break;
+                    case 7:
                         Timer timer = new Timer();
                         try {
                             play60Seconds(timer);
@@ -50,7 +53,7 @@ public class Game {
                             timer.cancel();
                         }
                         break;
-                    case 7:
+                    case 8:
                         quit = true;
                         scanner.close();
                         System.out.println("GoodBye!");
@@ -58,6 +61,7 @@ public class Game {
                 }
         }
     }
+
 
     private void convertToLetter() {
         Instructions.enterNumberToConvert();
@@ -173,6 +177,41 @@ public class Game {
             playWithDictionary();
         }
     }
+    private void playWithDictionaryReverse() {
+        boolean keepGoing = false;
+        String word = dictionary.getWord();
+        keepGoing = playReverse(word);
+        if(keepGoing) {
+            playWithDictionaryReverse();
+        }
+    }
+
+    private boolean playReverse(String word) {
+        String numbers = alphabet.getNumberWord(word);
+        Instructions.reverseWord(numbers);
+        Instructions.playReverseResponse();
+        String response = scanner.nextLine();
+        String answer = word;
+
+        if(Utils.isEnd(response)) {
+            Instructions.endGame();
+            Instructions.menu();
+            return false;
+        }
+
+        if (Utils.isAnswer(response)) {
+            Instructions.showAnswer(answer);
+            return false;
+        }
+
+        if (Utils.cleanSpaces(answer).compareTo(Utils.cleanSpaces(response)) == 0) {
+            Instructions.correct();
+            return true;
+        }
+
+        Instructions.wrong(numbers, response);
+        return playReverse(word);
+    }
 
     private boolean play(String word) {
         Instructions.word(word);
@@ -203,7 +242,7 @@ public class Game {
     private boolean playThread(String word) throws InterruptedException {
         Instructions.word(word);
         Instructions.playResponse();
-        ConsoleInput console = new ConsoleInput(1,60);
+        ConsoleInput console = new ConsoleInput();
 
         String response = console.readLine();
         String answer = alphabet.getNumberWord(word);
@@ -227,4 +266,5 @@ public class Game {
         Instructions.wrong(word, response);
         return playThread(word);
     }
+
 }

@@ -6,36 +6,25 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.*;
 
 public class ConsoleInput {
-    private final int tries;
-    private final int timeout;
-    private final TimeUnit unit = TimeUnit.SECONDS;
-
-    public ConsoleInput(int tries, int timeout) {
-        this.tries = tries;
-        this.timeout = timeout;
-    }
 
     public String readLine() throws InterruptedException {
         ExecutorService ex = Executors.newSingleThreadExecutor();
         String input = null;
         try {
-            for (int i = 0; i < tries; i++) {
-                Future<String> result = ex.submit(new ConsoleInputReadTask());
-                try {
-                    input = result.get(timeout, unit);
-                    break;
-                } catch (ExecutionException e) {
-                    e.getCause().printStackTrace();
-                } catch (TimeoutException e) {
-                    result.cancel(true);
-                }
+            Future<String> result = ex.submit(new ConsoleInputReadTask());
+            try {
+                input = result.get(60, TimeUnit.SECONDS);
+            } catch (ExecutionException e) {
+                e.getCause().printStackTrace();
+            } catch (TimeoutException e) {
+                result.cancel(true);
             }
         } finally {
             ex.shutdownNow();
         }
-
         return input;
     }
+
 }
 
 
@@ -46,7 +35,7 @@ class ConsoleInputReadTask implements Callable<String> {
         String input;
         do {
             try {
-                while (!br.ready()  /*  ADD SHUTDOWN CHECK HERE */) {
+                while (!br.ready()) {
                     Thread.sleep(200);
                 }
                 input = br.readLine();

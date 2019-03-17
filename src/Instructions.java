@@ -8,9 +8,10 @@ class Instructions {
         System.out.println("\t 2 - Get letter from Number");
         System.out.println("\t 3 - Test yourself.");
         System.out.println("\t 4 - Play");
-        System.out.println("\t 5 - Timed play");
-        System.out.println("\t 6 - 60 second trial");
-        System.out.println("\t 7 - Quit the application.");
+        System.out.println("\t 5 - Play Reverse");
+        System.out.println("\t 6 - Timed play");
+        System.out.println("\t 7 - 60 second trial");
+        System.out.println("\t 8 - Quit the application.");
         breakLine();
     }
 
@@ -58,5 +59,15 @@ class Instructions {
 
     static void enterNumberToConvert() {
         System.out.println("Enter your number x (0<x<26):");
+    }
+
+    public static void playReverseResponse() {
+        breakLine();
+        System.out.println("Please enter your converted word or (answer to see the reponse, end to close the game): ");
+    }
+
+    public static void reverseWord(String numbers) {
+        breakLine();
+        System.out.println("Numbers To Convert: " + numbers);
     }
 }
