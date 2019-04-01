@@ -53,7 +53,7 @@ class Instructions {
 
     static void playResponse() {
         breakLine();
-        System.out.println("Please enter your numbers (separated by a space) or (answer to see the reponse, end to close the game): ");
+        System.out.println("Please enter your numbers (separated by a dash) or (answer to see the response, end to close the game): ");
     }
 
 
@@ -63,7 +63,7 @@ class Instructions {
 
     public static void playReverseResponse() {
         breakLine();
-        System.out.println("Please enter your converted word or (answer to see the reponse, end to close the game): ");
+        System.out.println("Please enter your converted word or (answer to see the response, end to close the game): ");
     }
 
     public static void reverseWord(String numbers) {
