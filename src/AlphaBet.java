@@ -22,10 +22,10 @@ public class AlphaBet {
         String stringNum = "";
         for(char c : chars) {
             if(list.get(c) != null) {
-                stringNum += list.get(c) + " ";
+                stringNum += list.get(c) + "-";
             }
         }
-        return stringNum;
+        return stringNum.substring(0, stringNum.length()-1);
     }
 
     public char getLetter (int index){
